@@ -1,0 +1,92 @@
+<!-- header start -->
+<header>
+    <div class="header-nav container">
+        <div class="header-row row">
+            <nav class="navbar navbar-default" role="navigation">
+                <!-- menu -->
+                <div class="navbar-header">
+                    <!-- <div class="logo"><img src="images/grw-logo.png" alt="grw-logo"></div> -->
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" id="btn-nav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse container-fluid" id="navbar">
+                    <?php echo $this->getChildHtml('topMenu') ?>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="li-search">
+														<?php
+															$catalogSearchHelper =  $this->helper('catalogsearch');
+														?>
+														<form id="header_search_form" class="navbar-form form-search" action="<?php echo $catalogSearchHelper->getResultUrl() ?>" method="get">
+																<div class="input-group add-on">
+																		<input id="srch-term" type="text" name="<?php echo $catalogSearchHelper->getQueryParamName() ?>" value="<?php echo $catalogSearchHelper->getEscapedQueryText() ?>" class="input-text form-control" maxlength="<?php echo $catalogSearchHelper->getMaxQueryLength();?>" />
+																		<div id="header_search_autocomplete" class="header-search-autocomplete input-group-btn">
+																			<button type="submit" title="<?php echo $this->__('Go') ?>" class="btn btn-search"><i class="fa fa-search"></i></button>
+																		</div>
+																		<script type="text/javascript">
+																		//<![CDATA[
+																				var searchForm = new Varien.searchForm('header_search_form', 'srch-term', '<?php echo $this->__('Search entire store here...') ?>');
+																				//searchForm.initAutocomplete('<?php echo $catalogSearchHelper->getSuggestUrl() ?>', 'header_search_autocomplete');
+																		//]]>
+																		</script>
+																</div>
+														</form>
+                            <?php //echo $this->getChildHtml('topSearch') ?>
+                            <!--<form class="navbar-form form-search" role="search">
+                                <div class="input-group add-on">
+                                    <input class="form-control" placeholder="Search entire store here" name="srch-term" id="srch-term" type="search">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-search" id="srch-submit" type="submit"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>-->
+                        </li>
+                        <li class="menu-right-item"><a class="login-link" href="#"><i class="fa fa-lock" aria-hidden="true"></i></a></li>
+                        <li class="menu-right-item li-shopping-cart"><a href="<?php echo Mage::getUrl('checkout/cart'); ?>"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
+                        <?php echo $this->getChildHtml('store_language') ?>
+                    </ul>
+                    <div class="dropdown">
+                        <button class="btn btn-dropdown dropdown-toggle" type="button" data-toggle="dropdown"><span class="caret"></span></button>
+                        <ul class="navbar-dropdown">
+                            <li class="search-form">
+                                <form class="navbar-form" role="search">
+                                    <div class="input-group add-on">
+                                        <input class="form-control" placeholder="Search entire store here" name="srch-term" id="srch-term" type="search">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-search" id="srch-submit" type="submit"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </li>
+                            <li class="menu-right-item"><a class="login-link" href="#"><i class="fa fa-lock" aria-hidden="true"></i></a></li>
+                            <li class="menu-right-item"><a href="<?php echo Mage::getUrl('checkout/cart'); ?>"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
+														<?php echo $this->getChildHtml('store_language') ?>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="logo-black">
+        <img src="<?php echo $this->getSkinUrl('images/grw-logo-black.png'); ?>">
+    </div>
+</div>
+<!-- header end -->
+
+<script>
+    jQuery(".btn-dropdown").click(function () {
+        jQuery(".navbar-dropdown").toggle();
+          return false;
+    });
+
+    jQuery('.login-link').click(function () {
+        location.href = '<?php echo Mage::getUrl('customer/account/login'); ?>';
+    });
+</script>

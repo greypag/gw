@@ -1,0 +1,16 @@
+<?php if($crumbs && is_array($crumbs)): ?>
+<nav class="breadcrumb">
+    <?php foreach($crumbs as $_crumbName=>$_crumbInfo): ?>
+        <?php if($_crumbInfo['link']): ?>
+            <a class="breadcrumb-item" href="<?php echo $_crumbInfo['link'] ?>" title="<?php echo $this->htmlEscape($_crumbInfo['title']) ?>"><?php echo $this->htmlEscape($_crumbInfo['label']) ?></a>
+        <?php elseif($_crumbInfo['last']): ?>
+            <span class="breadcrumb-item active"><?php echo $this->htmlEscape($_crumbInfo['label']) ?></span>
+        <?php else: ?>
+            <?php echo $this->htmlEscape($_crumbInfo['label']) ?>
+        <?php endif; ?>
+        <?php if(!$_crumbInfo['last']): ?>
+            <span></span>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</nav>
+<?php endif; ?>

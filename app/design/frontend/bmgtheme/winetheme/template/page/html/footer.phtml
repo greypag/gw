@@ -1,0 +1,27 @@
+<?php echo $this->getChildHtml('aw_blog_footer') ?>
+<?php if(Mage::getSingleton('cms/page')->getIdentifier() == 'home'  && Mage::app()->getFrontController()->getRequest()->getRouteName() == 'cms' ) :  ?>
+	<?php echo $this->getChildHtml('tm_googlemap_embed') ?>
+<?php endif;  ?>
+<footer>
+  <div class="footer-first">
+    <div class="container col-pad-none">
+			<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('shipping_info')->toHtml(); ?>
+    </div>
+  </div>
+  <div class="footer-second">
+    <div class="container">
+			<?php echo $this->getChildHtml('left.newsletter'); ?>
+			<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('list_icon')->toHtml() ?>
+    </div>
+  </div>
+  <div class="footer-third">
+		<div class="container">
+			<?php echo $this->getChildHtml('cms_footer_links') ?>
+		  <div class="row section">
+		    <div class="col-md-12">
+		      <div class="copyright tc-mobile"><?php echo $this->getCopyright() ?></div>
+		    </div>
+		  </div>
+		</div>
+  </div>
+</footer>

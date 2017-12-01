@@ -1,0 +1,161 @@
+body[class*="customer-account"] .col-right.sidebar,body[class*="sales"] .col-right.sidebar{
+	padding-left: 80px;
+}
+.block-account .block-title .fa-user{
+	font-size: 22px;
+	padding-right: 5px;
+}
+.block-account *{
+	color: #527b6a;
+}
+.block-account .block-title{
+	border-bottom: 1px solid #000000;
+	margin-bottom: 14px;
+}
+.block-account ul li{
+	font-size: 22px;
+	line-height: 2;
+	padding: 0;
+	font-weight: bold;
+}
+.block-account ul li.current strong{
+	color: #664356;
+}
+.my-account .page-title{
+	border-bottom: 1px solid #000000;
+	padding-bottom: 30px;
+}
+.my-account .page-title h1{
+	font-size: 42px;
+	line-height: 1;
+	color: #527b6a;
+	font-weight: bold;
+}
+.my-account .welcome-msg .hello{
+	color: #527b6a;
+	font-size: 22px;
+}
+.my-account .box-account{
+	overflow: hidden;
+}
+.my-account .box-account .box-head{
+	overflow: initial;
+	padding: 10px 0;
+	margin: 50px 0 0 0;
+	border-bottom: 1px solid #000000;
+}
+.my-account .box-recent.box-account .box-head{
+	border-bottom: none;
+}
+.my-account .box-account h2{
+	font-size: 30px;
+	color: #527b6a;
+	font-weight: bold;
+	line-height: 1;
+}
+.my-account .box-head a{
+	margin-bottom: 0;
+	line-height: 30px;
+}
+.my-account #my-orders-table th,.my-account #my-orders-table td{
+	border: none;
+}
+.my-account #my-orders-table th{
+	text-align: left;
+	border-bottom: 1px solid #000000;
+	border-top: 1px solid #000000;
+}
+.my-account .box-account .box-title h3,.order-info-box h2,.order-items h2{
+	font-size: 22px;
+	color: #527b6a;
+	text-transform: capitalize;
+	line-height: 2;
+}
+.my-account .col2-set{
+	padding: 0;
+}
+.my-account .box-content h4{
+	font-size: 16px;
+	padding-bottom: 20px;
+}
+.my-account .box-content h4,.my-account .box-content address,.my-account .box-account p,.my-account .box-info a{
+	color: #000000;
+	font-weight: bold;
+}
+.my-account #my-orders-table td{
+	color: #000000;
+	font-weight: bold;
+}
+.my-account #my-orders-table tr.even td,.my-account #my-orders-table tbody.even{
+	background-color: #f0f0f0;
+}
+.my-account #my-orders-table tr td:not(:first-of-type){
+	border-left:1px solid #f0f0f0;
+}
+.my-account #my-orders-table td strong{
+	display: none;
+}
+.my-account #my-orders-table tfoot td strong{
+	display: inline-block;
+}
+.my-account #my-orders-table th, .my-account #my-orders-table td{
+	padding: 20px 12px;
+}
+.my-account #my-orders-table th:first-of-type, .my-account #my-orders-table td:first-of-type{
+	padding-left: 0;
+}
+.my-account #my-orders-table td.last{
+	text-align: right;
+}
+@media (max-width: 767px) {
+	.my-account #my-orders-table td.last{
+		text-align: left;
+	}
+	.my-account #my-orders-table td:first-of-type{
+		padding-left: 12px;
+	}
+	.my-account #my-orders-table tfoot td{
+		text-align: left !important;
+	}
+	.my-account #my-orders-table tfoot td strong{
+		font-size: 16px;
+	}
+	.my-account #my-orders-table td strong,.my-account #my-orders-table tfoot td strong{
+		font-weight: bold;
+		color: #000000;
+		min-width: 120px;
+		display: inline-block;
+	}
+	.my-account .data-table tr{
+		padding-bottom: 10px;
+		margin-bottom: 10px;
+	}
+	.my-account #my-orders-table{
+		border: none;
+	}
+	.my-account #my-orders-table .separator{
+		margin: 0 13px;
+	}
+	body[class*="customer-account"] .col-right.sidebar,body[class*="sales"] .col-right.sidebar{
+		padding-left: 15px;
+	}
+	.my-account #my-orders-table tr.last{
+		border-bottom: 1px solid #ECECEC;
+	}
+	.block-account .block-title strong,.block-account .block-title .fa-user{
+		font-size: 30px;
+	}
+	.block-account ul li a{
+		text-decoration: none;
+	}
+	.my-account #my-orders-table tr.even td{
+		background-color: transparent;
+	}
+	.my-account #my-orders-table tr td:not(:first-of-type){
+		border-left: none;
+	}
+	.page{
+		margin: 0;
+		padding-top: 0;
+	}
+}

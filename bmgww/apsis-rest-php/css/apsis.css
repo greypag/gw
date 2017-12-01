@@ -1,0 +1,66 @@
+body {
+	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+.navbar-subnav {
+	top: 40px;
+}
+.navbar-subnav, .navbar-actions {
+	position: fixed;
+	z-index: 100;
+	width: 940px;
+}
+.navbar-subnav .navbar-inner {
+	-webkit-border-top-left-radius: 0;
+	-moz-border-top-left-radius: 0;
+	border-top-left-radius: 0;
+	-webkit-border-top-right-radius: 0;
+	-moz-border-top-right-radius: 0;
+	border-top-right-radius: 0;
+	padding-top: 8px;
+}
+.spacer {
+	height: 40px;
+}
+
+ul.nav-tabs {
+	margin-bottom: 0;
+}
+
+.tab-content {
+	border: 1px solid lightgray;
+	margin-bottom: 20px;
+	border-top: none;
+	min-height: 200px;
+	padding: 10px;
+}
+#mLMGet, #gCGet {
+	margin: 10px 0 15px;
+	display: block;
+}
+.resultBox {
+	border: 1px solid lightgray;
+	height: 180px;
+	width: 100%;
+	overflow: auto;
+	display: inline-block;
+}
+#iMImportId {
+	width: 100%;
+}
+#error-holder {
+	border: 1px solid lightgray;
+	padding: 12px;
+	height: 125px;
+}
+#error-list {
+	border: 1px solid lightgray;
+	height: 90px;
+	overflow: auto;
+	width: 80%;
+	display: inline-block;
+	float: left;
+	margin-right: 12px;
+}
+#btn-clear-errors {
+	float: left;
+}

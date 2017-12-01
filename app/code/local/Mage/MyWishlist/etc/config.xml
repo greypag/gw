@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Mage_MyWishlist>
+            <version>0.0.1</version>
+        </Mage_MyWishlist>
+    </modules>
+    <global>
+        <blocks>
+            <mywishlist><!-- block alias -->
+                <class>Mage_MyWishlist_Block</class>
+            </mywishlist>
+        </blocks>
+        <helpers>
+            <mywishlist><!-- helper alias -->
+                <class>Mage_MyWishlist_Helper</class>
+            </mywishlist>
+        </helpers>
+    </global>
+    <frontend>
+        <routers>
+            <mywishlist>
+                <use>standard</use>
+                <args>
+                    <module>Mage_MyWishlist</module>
+                    <frontName>mywishlist</frontName><!-- url key for module -->
+                </args>
+            </mywishlist>
+        </routers>
+        <layout>
+            <updates>
+                <mage_mywishlist>
+                    <file>mage_mywishlist.xml</file><!-- frontend layout file -->
+                </mage_mywishlist>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Mage_MyWishlist>
+                    <files>
+                        <default>Mage_MyWishlist.csv</default><!-- translation file (not mandatory) -->
+                    </files>
+                </Mage_MyWishlist>
+            </modules>
+        </translate>
+    </frontend>
+</config>

@@ -1,0 +1,30 @@
+<?php if($this->canShowBlock()): ?>
+<div class="h3-style-cap"><?php echo $this->__('Shop By') ?></div>
+<div class="panel-group-item" id="accordion-1">
+    <?php echo $this->getStateHtml() ?>
+    <?php if ($this->getLayer()->getState()->getFilters()): ?>
+        <div class="actions"><a href="<?php echo $this->getClearUrl() ?>"><?php echo $this->__('Clear All') ?></a></div>
+    <?php endif; ?>
+    <?php if($this->canShowOptions()): ?>
+        <p class="block-subtitle"><?php echo $this->__('Shopping Options') ?></p>
+            <?php $_filters = $this->getFilters() ?>
+            <?php foreach ($_filters as $key=>$_filter): ?>
+                <?php if($_filter->getItemsCount()): ?>
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                          <h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $key ?>"><?php echo $this->__($_filter->getName()) ?></a></h4>
+                      </div>
+                      <div id="collapse<?php echo $key ?>" class="panel-collapse collapse in">
+                          <div class="panel-body">
+                              <ul class="checkbox-list">
+                                  <?php echo $_filter->getHtml() ?>
+                              </ul>
+                          </div>
+                      </div>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        <script type="text/javascript">decorateDataList('narrow-by-list')</script>
+    <?php endif; ?>
+</div>
+<?php endif; ?>

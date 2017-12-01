@@ -1,0 +1,17 @@
+<?php //var_dump(get_class($this)); ?>
+<?php $_menu = $this->getHtml('level-top') ?>
+<?php if($_menu): ?>
+
+<ul id="nav" class="nav navbar-nav sf-menu">
+  <li><a class="header-logo-link" href="<?php echo Mage::app()->getStore($storeId)->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK); ?>"><img src="<?php echo $this->getSkinUrl('images/grw-logo.png'); ?>" alt="grw-logo"></a></li>
+    <?php echo $_menu ?>
+    <li><a href="#"><span>Why Gracious</span></a></li>
+    <li><a href="<?php echo Mage::getUrl('contacts-us'); ?>"><span>Contact Us</span></a></li>
+</ul>
+<div class="sf-menu-block">
+    <div id="menu-icon"><?php echo $this->__('Categories') ?></div>
+    <ul class="sf-menu-phone">
+        <?php echo $_menu ?>
+    </ul>
+</div>
+<?php endif ?>

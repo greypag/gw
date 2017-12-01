@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="sign-up tc-mobile"><span>Sign Up for Our Newsletter!</span></div>
+  </div>
+  <div class="col-md-8">
+    <form class="footer-form" action="<?php echo $this->getFormActionUrl() ?>" method="post" id="newsletter-validate-detail">
+      <div class="input-group add-on">
+        <!--<input class="form-control" placeholder="Your Email Address Here" name="srch-term" id="news-email" type="text">-->
+        <input type="text" name="email" placeholder="Your Email Address Here" id="newsletter" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Sign up for our newsletter')) ?>"
+          class="input-text required-entry validate-email form-control" />
+        <div class="input-group-btn">
+          <button type="submit" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Subscribe')) ?>" class="button btn-color-2">Subscribe</button>
+          <!--<button class="btn btn-color-2" id="news-email-submit" type="submit">Subscribe</button>-->
+        </div>
+      </div>
+    </form>
+    <div class="contact-us-mobile">
+      <div class="footer-head-font">Connect With Us</div>
+      <ul class="social-icon">
+        <li><a href=""><i class="fa fa-facebook"></i></a></li>
+        <li><a href=""><i class="fa fa-twitter"></i></a></li>
+        <li><a href=""><i class="fa fa-instagram"></i></a></li>
+        <li><a href=""><i class="fa fa-youtube-play"></i></a></li>
+      </ul>
+    </div>
+  </div>
+  <script type="text/javascript">
+    //<![CDATA[
+    var newsletterSubscriberFormDetail = new VarienForm('newsletter-validate-detail');
+    //]]>
+  </script>
+</div>

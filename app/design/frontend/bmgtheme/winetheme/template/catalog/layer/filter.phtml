@@ -1,0 +1,14 @@
+<?php foreach ($this->getItems() as $_item): ?>
+    <li>
+        <?php if ($_item->getCount() > 0): ?>
+            <input class="styled-checkbox" id="styled-checkbox-<?php echo $this->urlEscape($_item->getValue()) ?>" type="checkbox" value="" data-link="<?php echo $this->urlEscape($_item->getUrl()) ?>">
+            <label for="styled-checkbox-<?php echo $this->urlEscape($_item->getValue()) ?>">
+                <a href="<?php echo $this->urlEscape($_item->getUrl()) ?>"><?php echo $_item->getLabel() ?></a>
+            </label>
+            <?php else: echo $_item->getLabel() ?>
+        <?php endif; ?>
+        <?php if ($this->shouldDisplayProductCount()): ?>
+            (<?php echo $_item->getCount() ?>)
+        <?php endif; ?>
+    </li>
+<?php endforeach ?>

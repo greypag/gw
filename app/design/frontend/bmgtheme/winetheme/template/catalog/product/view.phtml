@@ -1,0 +1,286 @@
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = $this->getProduct(); ?>
+<style>
+  .block-compare { display: block; }
+  .block-content, .div-link {display: none; }
+<style>
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+<style>
+    .div-link{display: none;}
+</style>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+
+<div class="wine-info">
+    <div class="wine-product">
+        <div class="tab-row">
+            <div class="no-display">
+                <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+                <input type="hidden" name="related_product" id="related-products-field" value="" />
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="product-img-box">
+                    <?php //echo $this->getChildHtml('media') ?>
+                </div>
+                <!-- Slider -->
+                <div class="" id="slider-thumbs">
+                    <div class="" id="carousel-bounding-box">
+                        <div class="carousel slide" id="myCarousel">
+                            <!-- Carousel items -->
+                            <div class="carousel-inner" role="listbox">
+                                <?php $_num = 0; ?>
+                                <?php foreach ($_product->getMediaGalleryImages() as $key=>$image) :?>
+                                    <div class="active item img-item" data-slide-number="<?php echo $_num ?>"><img src="<?php echo Mage::helper('catalog/image')->init($_product, 'image', $image->getFile()); ?>" alt="<?php echo $_product->getName()?>" /></div>
+                                    <?php $_num++; ?>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <ul class="hide-bullets row">
+                            <div class="carousel slide media-carousel" id="media">
+                                <div class="carousel-inner">
+                                    <?php $_num = 0; ?>
+                                    <?php foreach ($_product->getMediaGalleryImages() as $key=>$image) :?>
+                                        <?php
+                                            if($_num%3==0){
+                                                if($_num==0){
+                                                  echo '<div class="item active">';
+                                                }
+                                                else{
+                                                  echo '<div class="active">';
+                                                }
+                                            }
+                                        ?>
+                                        <div class="col-xs-4 col-sm-4 col-md-4">
+                                            <a class="thumbnail" id="carousel-selector-<?php echo $_num ?>"><img src="<?php echo Mage::helper('catalog/image')->init($_product, 'image', $image->getFile())->resize(100, 100); ?>" alt="<?php echo $_product->getName()?>" /></a>
+                                            <?php $_num++; ?>
+                                        </div>
+                                        <?php
+                                            if($_num%3==0){
+                                              echo '</div>';
+                                            }
+                                        ?>
+                                    <?php endforeach; ?>
+                                </div>
+                                <?php if ($_num > 3) :?>
+                                    <a data-slide="prev" href="#media" class="left carousel-control">‹</a>
+                                    <a data-slide="next" href="#media" class="right carousel-control">›</a>
+                                <?php endif; ?>
+                            </div>
+                        </ul>
+                    </div>
+                    <!--/Slider-->
+                </div>
+                <script>
+                    jQuery(document).ready(function($) {
+
+                        $('#myCarousel').carousel({
+                            interval: 5000
+                        });
+
+                        //Handles the carousel thumbnails
+                        $('[id^=carousel-selector-]').click(function () {
+                            var id_selector = $(this).attr("id");
+                            try {
+                                var id = /-(\d+)$/.exec(id_selector)[1];
+                                //console.log(id_selector, id);
+                                jQuery('#myCarousel').carousel(parseInt(id));
+                            } catch (e) {
+                                console.log('Regex failed!', e);
+                            }
+                        });
+                        // When the carousel slides, auto update the text
+                        $('#myCarousel').on('slid.bs.carousel', function (e) {
+                            var id = $('.item.active').data('slide-number');
+                            $('#carousel-text').html($('#slide-content-'+id).html());
+                        });
+                    });
+                </script>
+                <style>
+                    .hide-bullets {
+                      list-style:none;
+                      margin-left: -40px;
+                      margin-top:20px;
+                    }
+
+                    .thumbnail {
+                      padding: 0;
+                    }
+
+                    .carousel-inner>.item>img, .carousel-inner>.item>a>img {
+                      width: 100%;
+                    }
+                </style>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-8">
+                <div class="product-info">
+                    <div class="product-title">
+                        <?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
+                    </div>
+                    <div class="status">
+                      <?php if ($this->displayProductStockStatus()): ?>
+                          <?php if ($_product->isAvailable()): ?>
+                              <?php echo $this->__('In stock') ?>
+                          <?php else: ?>
+                              <?php echo $this->__('Out of stock') ?>
+                          <?php endif; ?>
+                      <?php endif; ?>
+                    </div>
+                    <table>
+                        <tbody>
+                            <tr class="Vintage">
+                                <td>Vintage:</td>
+                                <td><?php echo $this->htmlEscape($_product->getAttributeText('vintage')); ?></td>
+                            </tr>
+                            <tr class="region">
+                                <td>Region:</td>
+                                <td><?php echo $this->htmlEscape($_product->getAttributeText('region')); ?></td>
+                            </tr>
+                            <tr class="grape">
+                                <td>Grape:</td>
+                                <td><?php echo $this->htmlEscape($_product->getAttributeText('grape')); ?></td>
+                            </tr>
+                            <tr class="Desc">
+                                <td>Description:</td>
+                                <td>
+                                  <?php if ($_product->getShortDescription()):?>
+                                      <?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?>
+                                  <?php endif;?>
+                                </td>
+                            </tr>
+                            <tr class="food">
+                                <td>Food Pairing:</td>
+                                <td><?php echo $this->htmlEscape($_product->getData('pairing')); ?></td>
+                            </tr>
+                            <tr class="size">
+                                <td>Size:</td>
+                                <td><?php echo $this->htmlEscape($_product->getAttributeText('size')); ?></td>
+                            </tr>
+                            <tr class="ratings">
+                                <td>Ratings:</td>
+                                <td>
+                                  <span class="stars">
+                                    <?php
+                                        $ratings = $this->htmlEscape($_product->getData('ratings'));
+                                        for($_i=0; $_i<5; $_i++){
+                                            if($_i < $ratings){
+                                                echo '<i class="fa fa-star" aria-hidden="true"></i>';
+                                            }
+                                            else{
+                                                echo '<i class="fa fa-star-o" aria-hidden="true"></i>';
+                                            }
+                                        }
+                                    ?>
+                                  </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="cart-price">
+                    <div class="col-xs-6 col-md-3">
+                        <?php
+                            $_coreHelper = $this->helper('core');
+                            $_weeeHelper = $this->helper('weee');
+                            $_taxHelper = $this->helper('tax');
+
+                            $_store = $_product->getStore();
+                            $_simplePricesTax = ($_taxHelper->displayPriceIncludingTax() || $_taxHelper->displayBothPrices());
+                            $_convertedPrice = $_store->roundPrice($_store->convertPrice($_product->getPrice()));
+                            $_regularPrice = $_taxHelper->getPrice($_product, $_convertedPrice, $_simplePricesTax);
+                            $_originalWeeeTaxAmount = $_weeeHelper->getOriginalAmount($_product);
+                            $_originalWeeeTaxAmount = $_store->roundPrice($_store->convertPrice($_originalWeeeTaxAmount));
+                            $_convertedFinalPrice = $_store->roundPrice($_store->convertPrice($_product->getFinalPrice()));
+                            $_finalPrice = $_taxHelper->getPrice($_product, $_convertedFinalPrice)
+                        ?>
+                        <div class="price"><?php echo $_coreHelper->formatPrice($_finalPrice + $_weeeTaxAmount, false) ?></div>
+                    </div>
+                    <div class="col-xs-6 col-md-4">
+                        <div class="form-group">
+                            <?php if(!$_product->canConfigure() && $_product->isSaleable()): ?>
+                                <form  method="post" id="" action="<?php echo $this->helper('checkout/cart')->getAddUrl($_product) ?>" >
+                                    <div class="quantity">
+                                        <select class="form-control" id="" name="qty">
+                                          <?php
+                                              $stockQty = Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product);
+                                              $qty = $stockQty->getQty();
+                                              if($qty == 0){
+                                                  echo '<option>0</option>';
+                                              }
+                                              else{
+                                                  for($i=1; $i<=$qty; $i++){
+                                                      echo "<option>{$i}</option>";
+                                                  }
+                                              }
+                                          ?>
+                                        </select>
+                                    </div>
+                                    <div class="to-cart"><button type="submit" name="button" class="btn btn-cart" title="<?php echo $this->__('Add to Cart') ?>"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button></div>
+                                  </form>
+                              <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-5 share-out">
+                        <div class="col-xs-4 col-sm-4 col-md-4">
+                            <div class="collect">
+                              <?php //if ($this->helper('wishlist')->isAllow()) : ?>
+                                <a title="<?php echo $this->__('Add to Wishlist') ?>" href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" rel="tooltip" class="link-wishlist">
+                                  <?php //echo $this->__('Add to Wishlist') ?>
+                                  <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                </a>
+                              <?php //endif; ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4">
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown" id="li-share">
+                                    <div id="div-share" class="sharing" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-share-alt" aria-hidden="true"></i></div>
+                                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="div-share">
+                                      <li>
+                                        <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+                                          <a class="addthis_button_preferred_1" addthis:url="<?php echo $_product->getProductUrl() ?>"></a>
+                                          <a class="addthis_button_preferred_2" addthis:url="<?php echo $_product->getProductUrl() ?>"></a>
+                                          <a class="addthis_button_preferred_3" addthis:url="<?php echo $_product->getProductUrl() ?>"></a>
+                                          <a class="addthis_button_preferred_4" addthis:url="<?php echo $_product->getProductUrl() ?>"></a>
+                                          <a class="addthis_button_compact" addthis:url="<?php echo $_product->getProductUrl() ?>"></a>
+                                        </div>
+                                      </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <script type="text/javascript">
+                                jQuery('.dropdown').on('hidden.bs.dropdown', function () {
+                                    setTimeout(function(){ jQuery('.dropdown').show(); }, 10);
+                                })
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row desc-wine-tab">
+        <div class="col-md-12">
+            <div id="exTab1">
+                <ul class="nav nav-pills clearfix">
+                    <li class="active ">
+                        <a href="#1a" class="btn btn-tab" data-toggle="tab">Description</a>
+                    </li>
+                    <li class="">
+                        <a href="#2a" class="btn btn-tab" data-toggle="tab">Award</a>
+                    </li>
+                </ul>
+                <div class="tab-content clearfix">
+                    <div class="tab-pane active" id="1a">
+                        <div class="h2-style-purple">Title Description</div>
+                        <p><?php echo $_helper->productAttribute($_product, nl2br($_product->getDescription()), 'description') ?></p>
+                    </div>
+                    <div class="tab-pane" id="2a">
+                        <p><?php echo $this->htmlEscape($_product->getData('award')); ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo $this->getChildHtml('upsell_products') ?>

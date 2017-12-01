@@ -1,0 +1,59 @@
+<form id="discount-coupon-form" action="<?php echo $this->getFormActionUrl() ?>" method="post">
+    <div class="col-xs-12 col-sm-12">
+        <i class="fa fa-ticket" aria-hidden="true"></i>
+        <?php echo $this->__('Promo Code') ?>
+    </div>
+    <div class="col-xs-12 col-sm-12">
+        <input type="hidden" name="remove" id="remove-coupone" value="0" />
+        <input type="text" class="form-control" id="coupon_code" name="coupon_code" placeholder="<?php echo $this->__('Enter your coupon code if you have one.') ?>" value="<?php echo $this->escapeHtml($this->getCouponCode()) ?>" />
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <button type="button" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Apply Code')) ?>" class="btn-purple form-control btn-coupon-group" onclick="discountForm.submit(false)" value="<?php echo Mage::helper('core')->quoteEscape($this->__('Apply Code')) ?>"><?php echo $this->__('Apply Code') ?></button>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <?php if(strlen($this->getCouponCode())): ?>
+            &nbsp; <button type="button" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Cancel Code')) ?>" class="btn-purple form-control btn-coupon-group" onclick="discountForm.submit(true)" value="<?php echo Mage::helper('core')->quoteEscape($this->__('Cancel Code')) ?>"><?php echo $this->__('Cancel Code') ?></button>
+        <?php endif;?>
+    </div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+var discountForm = new VarienForm('discount-coupon-form');
+discountForm.submit = function (isRemove) {
+    if (isRemove) {
+        $('coupon_code').removeClassName('required-entry');
+        $('remove-coupone').value = "1";
+    } else {
+        $('coupon_code').addClassName('required-entry');
+        $('remove-coupone').value = "0";
+    }
+    return VarienForm.prototype.submit.bind(discountForm)();
+}
+//]]>
+</script>
+
+
+<!-- <?php //$getCouponCode = Mage::getSingleton('checkout/cart')->getQuote()->getCouponCode(); ?>
+<form id="discount-coupon-form" action="<?php //echo $this->getUrl('checkout/onepage/coupon')?>" method="post">
+<label for="coupon_code"> <?php //echo $this->__('Enter your coupon code if you have one.') ?></label><br />
+<input id="coupon_code" name="coupon_code" value="<?php //echo $getCouponCode; ?>"/>
+<?php  //if(strlen($getCouponCode)) { ?>
+<button type="button" onclick="updateCoupon(2); return false;" value="<?php //echo $this->__('Remove Coupon')?>"><span><?php echo $this->__('Remove Coupon') ?></span></button>
+<?php //} ?>
+<button type="button" onclick="updateCoupon(1); return false;" value="<?php //echo $this->__('Apply Coupon')?>"><span><?php echo $this->__('Apply Coupon') ?></span></button>
+</form> -->
+
+<script type="text/javascript">
+//<![CDATA[
+// function updateCoupon(reqid) {
+//   var reqid;
+//   if(reqid == 2) {  $('coupon_code').setValue('');  }
+//   $('discount-coupon-form').request({
+//     method: 'post',
+//     onComplete: payment.onComplete,
+//     onSuccess: payment.onSave,
+//     onFailure: checkout.ajaxFailure.bind(checkout),
+//   })
+// }
+//]]>
+</script>

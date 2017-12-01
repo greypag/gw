@@ -1,0 +1,45 @@
+<?php if (!Mage::registry('current_category')) return ?>
+<?php $_categories = $this->getCurrentChildCategories() ?>
+<?php $_count = is_array($_categories)?count($_categories):$_categories->count(); ?>
+<?php if($_count): ?>
+
+<div class="h3-style-cap"><?php echo $this->__('Browse By') ?></div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><?php echo $this->__('Category') ?></a></h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse in">
+        <div class="panel-body">
+            <ul class="checkbox-list">
+                <?php foreach ($_categories as $_category): ?>
+                    <?php if($_category->getIsActive()): ?>
+                    <li>
+                        <input class="styled-checkbox" id="styled-checkbox-<?php echo $this->urlEscape($_category->getId()) ?>" type="checkbox" value="" data-link="<?php echo $this->getCategoryUrl($_category) ?>">
+                        <label for="styled-checkbox-<?php echo $this->urlEscape($_category->getId()) ?>">
+                          <a href="<?php echo $this->getCategoryUrl($_category) ?>"<?php if ($this->isCategoryActive($_category)): ?> class="current"<?php endif; ?>><?php echo $this->escapeHtml($_category->getName()) ?></a> (<?php echo $_category->getProductCount() ?>)
+                        </label>
+
+                        <?php
+                            /*$_subcategories = $_category->getChildrenCategories();
+                            if (count($_subcategories) > 0):
+                        ?>
+                            <ul class="checkbox-list ul-subcategory">
+                            <?php foreach ($_subcategories as $_subcategory):?>
+                                <li>
+                                    <input class="styled-checkbox" id="styled-checkbox-<?php echo $this->urlEscape($_subcategory->getId()) ?>" type="checkbox" value="" data-link="<?php echo $this->getCategoryUrl($_category) ?>">
+                                    <label for="styled-checkbox-<?php echo $this->urlEscape($_subcategory->getId()) ?>">
+                                      <a href="<?php echo $this->getCategoryUrl($_subcategory) ?>"<?php if ($this->isCategoryActive($_subcategory)): ?> class="current"<?php endif; ?>><?php echo $this->escapeHtml($_subcategory->getName()) ?></a> (<?php echo $_subcategory->getProductCount() ?>)
+                                    </label>
+                                </li>
+                            <?php endforeach ?>
+                            </ul>
+                        <?php endif;*/ ?>
+                    </li>
+                    <?php endif; ?>
+                <?php endforeach ?>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">decorateDataList('narrow-by-list2')</script>
+</div>
+<?php endif; ?>

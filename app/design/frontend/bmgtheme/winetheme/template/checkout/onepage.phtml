@@ -1,0 +1,253 @@
+<script type="text/javascript" src="<?php echo $this->getJsUrl('varien/accordion.js') ?>"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/opcheckout.js') ?>"></script>
+<?php
+    $_coreHelper = $this->helper('core');
+    $_weeeHelper = $this->helper('weee');
+    $_taxHelper = $this->helper('tax');
+?>
+
+<?php $i=0; foreach($this->getSteps() as $_stepId => $_stepInfo): ?>
+<?php if (!$this->getChild($_stepId) || !$this->getChild($_stepId)->isShow()): continue; endif; $i++ ?>
+  <div class="">
+    <?php //echo '$_stepId = '.$_stepId ?>
+  </div>
+<?php endforeach ?>
+
+
+<div class="container">
+  <div class="row div-title"><?php echo $this->__('Express Checkout') ?></div>
+  <div class="row div-subtitle"><?php echo $this->__('Fill in the fields below to complete your purchase!') ?></div>
+  <?php if(!Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+    <div class="row div-login">
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <form id="login-form" action="<?php echo $this->helper('customer')->getLoginPostUrl(); ?>" method="post">
+      <?php echo $this->getBlockHtml('formkey'); ?>
+      <div class="col-md-4">
+        <div class=""><?php echo $this->__('Already have an account?') ?></div>
+        <input type="email" class="input-text required-entry validate-email text-email form-control" id="login-email" name="login[username]" placeholder="Email Address" value="<?php echo $this->escapeHtml($this->getUsername()) ?>" />
+      </div>
+      <div class="col-md-4">
+        <div class=""><a href="<?php echo $this->getUrl('customer/account/forgotpassword') ?>" class=""><?php echo $this->__('Forgot your password?') ?></a></div>
+        <input type="password" class="input-text required-entry form-control text-password" id="login-password" name="login[password]" placeholder="Password"/>
+      </div>
+      <div class="col-md-4">
+        <button type="submit" name="" class="btn-login btn-purple form-control" onclick="onepageLogin(this)"><?php echo $this->__('Login') ?></button>
+      </div>
+    </form>
+    <script type="text/javascript">
+        var loginForm = new VarienForm('login-form', true);
+    </script>
+  </div>
+  <?php else : ?>
+  <?php $customer = Mage::getSingleton('customer/session')->getCustomer(); ?>
+  <div class="row div-content">
+    <div class="col-xs-12 col-md-4">
+        <div class="div-address">
+            <div class="row">
+                <?php echo $this->getChildHtml('coupon') ?>
+            </div>
+            <div class="div-line"></div>
+            <div class="row">
+                <?php echo $this->getChildHtml('billing') ?>
+                <div class="">
+                    <div class="col-xs-12 col-sm-12">
+                      <input type="checkbox" name="shipping[same_as_billing]" id="shipping:same_as_billing" value="1" checked="checked" title="Use Billing Address" onclick="shipping.setSameAsBilling(this.checked)" class="">
+                      <span><?php echo $this->__('Ship to the same address.') ?></span>
+                    </div>
+                    <div id="div-select-address" class="col-xs-12 col-sm-12" style="display: none;">
+                        <?php echo $this->getChildHtml('shipping') ?>
+                    </div>
+                </div>
+            </div>
+            <div class="div-line"></div>
+            <div class="row div-shipping-method">
+                <div class="col-xs-12 col-sm-12">
+                  <i class="fa fa-truck" aria-hidden="true"></i>
+                  <?php echo $this->__('Shipping Method') ?>
+                </div>
+                <div class="col-xs-12 col-sm-12">
+                    <?php echo $this->getChildHtml('shipping_method') ?>
+                </div>
+            </div>
+            <div class="div-line"></div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <i class="fa fa-credit-card" aria-hidden="true"></i>
+                  <?php echo $this->__('Payment Method') ?>
+                </div>
+                <div class="col-xs-12 col-sm-12">
+                  <div class="" style="display:none;">
+                    <?php echo $this->getChildHtml('shipping') ?>
+                  </div>
+                  <div id="checkout-step-payment" class="step a-item" style="display:block;">
+                      <?php echo $this->getChildHtml('payment') ?>
+                  </div>
+                </div>
+            </div>
+            <div class="div-line"></div>
+            <div class="row">
+              <div class="div-subscribe">
+                  <div class="col-xs-12 col-sm-12">
+                      <form id="form-subscribe">
+                          <input type="checkbox" id="checkbox-subscribe" class="checkbox-subscribe">
+                          <span class="span-subscribe"><?php echo $this->__('Subscribe to our newsletter') ?></span>
+                          <input type="hidden" name="subscribe" id="subscribe" value="fase">
+                      </form>
+                  </div>
+              </div>
+              <div class="div-place">
+                  <div class="col-xs-12 col-sm-12">
+                      <button type="button" id="place-order" class="btn-purple form-control btn-place-order" style="display: none;"><?php echo $this->__('Place Your Order Now') ?></button>
+                      <div class="" style="display:none;">
+                        <span class="please-wait" id="payment-please-wait" style="display:none;">
+                            <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape($this->__('Loading ...')) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Loading ...')) ?>" class="v-middle" /> <?php echo $this->__('Loading ...') ?>
+                        </span>
+                      </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-8">
+        <div class="review-order">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                    <?php echo $this->__('Review Your Order') ?>
+                    <table class="table cart-products" id="cart-products">
+                        <thead>
+                            <tr>
+                                <th><?php echo $this->__('Product Name') ?></th>
+                                <th class="a-right"><?php echo $this->__('Unit Price') ?></th>
+                                <th class="a-center"><?php echo $this->__('Qty') ?></th>
+                                <th class="a-left"><?php echo $this->__('Subtotal') ?></th>
+                                <th class="a-center"><?php echo $this->__('Clear all') ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach (Mage::getModel('checkout/cart')->getQuote()->getAllItems() as $item) :?>
+                                <?php
+                                    $_product = $item->getProduct();
+                                    $_store = $_product->getStore();
+                                    $_simplePricesTax = ($_taxHelper->displayPriceIncludingTax() || $_taxHelper->displayBothPrices());
+                                    $_convertedPrice = $_store->roundPrice($_store->convertPrice($_product->getPrice()));
+                                    $_regularPrice = $_taxHelper->getPrice($_product, $_convertedPrice, $_simplePricesTax);
+                                    $_originalWeeeTaxAmount = $_weeeHelper->getOriginalAmount($_product);
+                                    $_originalWeeeTaxAmount = $_store->roundPrice($_store->convertPrice($_originalWeeeTaxAmount));
+                                    $_convertedFinalPrice = $_store->roundPrice($_store->convertPrice($_product->getFinalPrice()));
+                                    $_finalPrice = $_taxHelper->getPrice($_product, $_convertedFinalPrice)
+                                ?>
+                                <tr>
+                                  <td style="display: -webkit-flex; display: flex;">
+                                      <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(75); ?>" width="75" height="75" alt="<?php echo $this->escapeHtml($this->getProductName()) ?>">
+                                      <span><?php echo $_product->getName(); ?></span>
+                                  </td>
+                                  <td class="a-right"><?php echo $_coreHelper->formatPrice($_finalPrice + $_weeeTaxAmount, false) ?></td>
+                                  <td class="a-center"><?php echo $this->escapeHtml($item->getQty()); ?></td>
+                                  <td class="a-left"><?php echo $_coreHelper->formatPrice($item->getRowTotalInclTax(), false); ?></td>
+                                  <td class="a-center"><a href="<?php echo Mage::getUrl('checkout/cart/delete', array('id' => $item->getId()))?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Remove item')) ?>" class=""><i class="fa fa-times icon-remove" aria-hidden="true"></i></a></td>
+                                </tr>
+                            <?php endforeach ?>
+                            <tr class="cart-detail" style="display: none;">
+                              <td colspan="3"><?php echo $this->__('Subtotal') ?></td>
+                              <td colspan="2"><?php echo $_coreHelper->formatPrice(Mage::getModel('checkout/cart')->getQuote()->getSubtotal(), false); ?></td>
+                            </tr>
+                            <tr class="cart-detail" style="display: none;">
+                              <td colspan="3"><?php echo $this->__('Shipping & Handling') ?></td>
+                              <td colspan="2"><?php echo $_coreHelper->formatPrice(Mage::getModel('checkout/cart')->getQuote()->getShippingAddress()->getShippingAmount(), false); ?></td>
+                            </tr>
+                            <?php $_couponcode = Mage::getModel('checkout/cart')->getQuote()->getCouponCode(); ?>
+                            <?php if($_couponcode != ''): ?>
+                            <?php $_discount = Mage::getModel('checkout/cart')->getQuote()->getShippingAddress()->getTotals()['discount']->getValue(); ?>
+                            <tr class="cart-detail" style="display: none;">
+                              <td colspan="3"><?php echo $this->__('Discount ('.$_couponcode.')') ?></td>
+                              <td colspan="2"><?php echo $_coreHelper->formatPrice($_discount, false); ?></td>
+                            </tr>
+                            <?php endif ?>
+                            <tr class="cart-detail" style="display: none;">
+                              <td colspan="3"><?php echo $this->__('Grand Total') ?></td>
+                              <td colspan="2"><?php echo $_coreHelper->formatPrice(Mage::getModel('checkout/cart')->getQuote()->getGrandTotal(), false); ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <?php echo $this->getChildHtml('review') ?>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <?php endif?>
+
+<?php /*
+  <ol class="opc" id="checkoutSteps">
+  <?php $i=0; foreach($this->getSteps() as $_stepId => $_stepInfo): ?>
+  <?php if (!$this->getChild($_stepId) || !$this->getChild($_stepId)->isShow()): continue; endif; $i++ ?>
+      <li id="opc-<?php echo $_stepId ?>" class="section<?php echo !empty($_stepInfo['allow'])?' allow':'' ?><?php echo !empty($_stepInfo['complete'])?' saved':'' ?>">
+          <div class="step-title">
+              <span class="number"><?php echo $i ?></span>
+              <h2><?php echo $_stepInfo['label'] ?></h2>
+              <a href="#"><?php echo $this->__('Edit') ?></a>
+          </div>
+          <div id="checkout-step-<?php echo $_stepId ?>" class="step a-item" style="display:none;">
+              <?php echo $this->getChildHtml($_stepId) ?>
+          </div>
+      </li>
+  <?php endforeach ?>
+  </ol>
+*/ ?>
+
+
+  <script type="text/javascript">
+  //<![CDATA[
+      var accordion = new Accordion('checkoutSteps', '.step-title', true);
+      <?php if($this->getActiveStep()): ?>
+      accordion.openSection('opc-<?php echo $this->getActiveStep() ?>');
+      <?php endif ?>
+      var checkout = new Checkout(accordion,{
+          progress: '<?php echo $this->getUrl('checkout/onepage/progress') ?>',
+          review: '<?php echo $this->getUrl('checkout/onepage/review') ?>',
+          saveMethod: '<?php echo $this->getUrl('checkout/onepage/saveMethod') ?>',
+          failure: '<?php echo $this->getUrl('checkout/cart') ?>'}
+      );
+  //]]>
+
+    function updateCoupon(reqid) {
+    //var reqid;
+    if(reqid == 2) {  $('coupon_code').setValue('');  }
+    $('discount-coupon-form').request({
+      method: 'post',
+      onComplete: payment.onComplete,
+      onSuccess: payment.onSave,
+      onFailure: checkout.ajaxFailure.bind(checkout),
+    })
+  }
+
+
+  jQuery( document ).ready(function() {
+    $('shipping:same_as_billing').checked = true;
+    jQuery('#billing-address-select').addClass('form-control');
+
+    jQuery($('shipping:same_as_billing')).click(function(){
+      if(jQuery(this).is(':checked'))
+        jQuery('#div-select-address').hide();
+      else
+        jQuery('#div-select-address').show();
+    });
+
+    jQuery($('billing:save_in_address_book')).click(function(){
+      if(jQuery(this).is(':checked'))
+        jQuery('#div-select-address').show();
+    });
+
+    jQuery('#place-order').click(function(){
+      review.save();
+    });
+
+    jQuery('#checkbox-subscribe').click(function(){
+      jQuery('#subscribe').val(jQuery(this).prop('checked'));
+    });
+  });
+
+  </script>
+
+</div>

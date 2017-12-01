@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Mage_Apsis>
+            <version>0.0.1</version>
+        </Mage_Apsis>
+    </modules>
+    <global>
+        <models>
+            <Apsis>
+              <class>Apsis_Newsletter_Model</class>
+            </Apsis>
+        </models>
+    </global>
+</config>

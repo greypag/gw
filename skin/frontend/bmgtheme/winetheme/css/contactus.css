@@ -1,0 +1,41 @@
+.store-intro-wrapper h2{
+	font-size: 22px;
+	border-bottom: 0;
+	text-transform: capitalize;
+	color: #527b6a;
+}
+.store-intro-wrapper li{
+	display: block;
+	padding-left: 20px;
+	margin-top: 20px;
+}
+.store-intro-wrapper p,
+.store-intro-wrapper li p,
+.store-intro-wrapper li h3{
+	font-size: 16px;
+	color: #000000;
+}
+.store-intro-wrapper li p,
+.store-intro-wrapper li h3{
+	line-height: 1.5;
+}
+.store-intro-wrapper li.fa{
+	margin-left: 0;
+}
+.store-intro-wrapper li.fa:before{
+	position: absolute;
+	padding-top: 5px;
+  left: 15px;	
+}
+.store-intro-text{
+	margin-bottom: 10px;
+}
+#contactForm {
+	width: 100% !important;
+}
+#contactForm .form-list .field{
+	width: 100%;
+}
+#contactForm input.input-text{
+	width: 100%;
+}

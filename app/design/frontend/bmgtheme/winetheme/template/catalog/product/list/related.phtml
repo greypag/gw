@@ -1,0 +1,70 @@
+<?php if($this->getItems()->getSize()): ?>
+<div class="block block-related">
+    <div class="h3-style-cap"><?php echo $this->__('Related Products') ?></div>
+
+
+
+    <!-- <p class="block-subtitle"><?php echo $this->__('Check items to add to the cart or') ?>&nbsp;<a href="#" onclick="selectAllRelated(this); return false;"><?php echo $this->__('select all') ?></a></p> -->
+    <?php foreach($this->getItems() as $_item): ?>
+
+            <!-- <?php if(!$_item->isComposite() && $_item->isSaleable()): ?>
+                <?php if (!$_item->getRequiredOptions()): ?>
+                    <input type="checkbox" class="checkbox related-checkbox" id="related-checkbox<?php echo $_item->getId() ?>" name="related_products[]" value="<?php echo $_item->getId() ?>" />
+                <?php endif; ?>
+            <?php endif; ?> -->
+            <div class="col-md-12 wine-info-sidebar clearfix">
+              <div class="wine-info-img">
+                <!--<img src="images/redwine-1.png" alt="redwine-1">-->
+                <a href="<?php echo $_item->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_item->getName()) ?>" class="product-image" itemprop="url"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(90,138) ?>" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" itemprop="image" /></a>
+              </div>
+              <div class="wine-info-txt">
+                <div class="product-name"><a href="<?php echo $_item->getProductUrl() ?>" itemprop="name"><?php echo $this->htmlEscape($_item->getName()) ?></a></div>
+                <div class="price"><?php echo $this->getPriceHtml($_item, true, '-related') ?></div>
+                <div class="action">
+                  <?php //if ($this->helper('wishlist')->isAllow()) : ?>
+                      <div class="add-wish"><a href="<?php echo $this->getAddToWishlistUrl($_item) ?>"><i class="fa fa-heart-o" aria-hidden="true"></i><?php echo $this->__('Add to Wishlist') ?></a></div>
+                  <?php //endif; ?>
+                  <div class="add-cart"><a href="<?php echo $this->getAddToCartUrl($_item) ?>"><i class="fa fa-shopping-cart" aria-hidden="true"></i><?php echo $this->__('Add to Cart') ?></a></div>
+                </div>
+              </div>
+            </div>
+    <?php endforeach ?>
+    <script type="text/javascript">decorateList('block-related', 'none-recursive')</script>
+    <script type="text/javascript">
+    //<![CDATA[
+    $$('.related-checkbox').each(function(elem){
+        Event.observe(elem, 'click', addRelatedToProduct)
+    });
+
+    var relatedProductsCheckFlag = false;
+    function selectAllRelated(txt){
+        if (relatedProductsCheckFlag == false) {
+            $$('.related-checkbox').each(function(elem){
+                elem.checked = true;
+            });
+            relatedProductsCheckFlag = true;
+            txt.innerHTML="<?php echo $this->__('unselect all') ?>";
+        } else {
+            $$('.related-checkbox').each(function(elem){
+                elem.checked = false;
+            });
+            relatedProductsCheckFlag = false;
+            txt.innerHTML="<?php echo $this->__('select all') ?>";
+        }
+        addRelatedToProduct();
+    }
+
+    function addRelatedToProduct(){
+        var checkboxes = $$('.related-checkbox');
+        var values = [];
+        for(var i=0;i<checkboxes.length;i++){
+            if(checkboxes[i].checked) values.push(checkboxes[i].value);
+        }
+        if($('related-products-field')){
+            $('related-products-field').value = values.join(',');
+        }
+    }
+    //]]>
+    </script>
+</div>
+<?php endif ?>
